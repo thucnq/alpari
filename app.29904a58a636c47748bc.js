@@ -64581,11 +64581,11 @@
                   , r = []
                   , i = []
                   , o = [];
-                let vol = [1,2,5,11,23,50,110,230,500]
+                let vol = [1,2,5,11,23,50,110,230,500,1200]
                 let btnBuy = document.getElementsByClassName("jss7 jss24 jss26 jss29 btn-container buy")
                 let btnSell = document.getElementsByClassName("jss7 jss24 jss26 jss29 btn-container sell")
                 let timeLabel = document.getElementsByClassName("special")
-                if (btnBuy.length + btnSell.length > 0 && timeLabel && timeLabel.length > 0 && timeLabel[0].outerText < "00:05"){
+                if (btnBuy.length + btnSell.length > 0 && timeLabel && timeLabel.length > 0 && timeLabel[0].outerText < "00:03"){
                     let arr = this.props.chart.data_chart
                     let idx = 1, maxIdx = 6, lenChart = arr.length;
                     let cmd = '';
@@ -64622,14 +64622,18 @@
                             cmd = 'buy'
                             btnBuy[0].click()
                         }
-                        let volumn = vol[idx-maxIdx-1] || 0
-                        let balance = parseFloat(document.getElementsByClassName("text-main v-middle")[0].textContent) || 0
-                        if (volumn <= 0.95 * (balance - volumn)){
-                            document.getElementsByName("Amount")[0].value = volumn
-                            document.title = "You need to " + cmd +" with "+volumn+ "$. Cuz there are "+ (idx-1)+" candles."
-                            console.log(document.title)
-                            console.log(time)
-                        }
+                        let volumn = localStorage.getItem("vol") 
+                        if (!volumn || volumn == 0){
+                            volumn = vol[idx-maxIdx-1] || 0
+                            if (volumn <= 0.95 * (balance - volumn)){
+                                localStorage.getItem("vol", volumn) 
+                                let balance = parseFloat(document.getElementsByClassName("text-main v-middle")[0].textContent) || 0
+                                document.getElementsByName("Amount")[0].value = volumn
+                                document.title = "You need to " + cmd +" with "+volumn+ "$. Cuz there are "+ (idx-1)+" candles."
+                                console.log(document.title)
+                                console.log(time)
+                            }
+                        }    
                     }
                 }
                 
