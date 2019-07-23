@@ -64587,7 +64587,7 @@
                 let timeLabel = document.getElementsByClassName("special")
                 if (btnBuy.length + btnSell.length > 0 && timeLabel && timeLabel.length > 0 && timeLabel[0].outerText < "00:05"){
                     let arr = this.props.chart.data_chart
-                    let idx = 1, maxIdx = 2, lenChart = arr.length;
+                    let idx = 1, maxIdx = 6, lenChart = arr.length;
                     let cmd = '';
                     let time = []
                     while (idx < lenChart - 1) {
@@ -64617,14 +64617,14 @@
                     if (idx > maxIdx) {
                         if(cmd == 'green') {
                             cmd = 'sell'
-                            if(idx > 7) btnSell[0].click()
+                            btnSell[0].click()
                         }else if(cmd == 'red'){
                             cmd = 'buy'
-                            if(idx > 7) btnBuy[0].click()
+                            btnBuy[0].click()
                         }
                         let volumn = vol[idx-maxIdx-1] || 0
                         let balance = parseFloat(document.getElementsByClassName("text-main v-middle")[0].textContent) || 0
-                        if (volumn <= balance){
+                        if (volumn <= 0.95 * (balance - volumn)){
                             document.getElementsByName("Amount")[0].value = volumn
                             document.title = "You need to " + cmd +" with "+volumn+ "$. Cuz there are "+ (idx-1)+" candles."
                             console.log(document.title)
